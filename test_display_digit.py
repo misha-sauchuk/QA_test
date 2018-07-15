@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from numbers import NumberInt
-from application import Application
+from model.numbers import NumberInt
+from fixture.application import Application
 import pytest
 
 
