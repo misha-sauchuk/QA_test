@@ -1,31 +1,18 @@
 # -*- coding: utf-8 -*-
-from selenium import webdriver
-import unittest
 from numbers import NumberInt
 from application import Application
+import pytest
 
 
-def is_alert_present(wd):
-    try:
-        wd.switch_to_alert().text
-        return True
-    except:
-        return False
+@pytest.fixture
+def app(request):
+    fixture = Application()
+    request.addfinalizer(fixture.destroy)
+    return fixture
 
 
-class test_display_digit(unittest.TestCase):
+def test_test_display_digit(app):
+    app.load_home_page()
+    app.add_one_digit(NumberInt())
+    app.reset_calc_data()
 
-    def setUp(self):
-        self.app = Application()
-
-
-    def test_test_display_digit(self):
-        self.app.load_home_page()
-        self.app.add_one_digit(NumberInt())
-        self.app.reset_calc_data()
-
-    def tearDown(self):
-        self.app.destroy()
-
-if __name__ == '__main__':
-    unittest.main()
