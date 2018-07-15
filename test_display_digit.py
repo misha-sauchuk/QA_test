@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.common.action_chains import ActionChains
-import time, unittest
+from selenium import webdriver
+import unittest
 
 def is_alert_present(wd):
     try:
@@ -12,18 +11,24 @@ def is_alert_present(wd):
 
 class test_display_digit(unittest.TestCase):
     def setUp(self):
-        self.wd = WebDriver()
-        self.wd.implicitly_wait(60)
+        self.wd = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+        self.wd.implicitly_wait(5)
     
     def test_test_display_digit(self):
-        success = True
         wd = self.wd
-        wd.get("http://www.sebuilder.com/")
-        wd.get("http://qa-test.klika-tech.com/")
-        wd.find_element_by_xpath("//ul[@class='digits']//li[.='1']").click()
+        self.load_home_page(wd)
+        self.add_one_digit(wd)
+        self.reset_calc_data(wd)
+
+    def reset_calc_data(self, wd):
         wd.find_element_by_xpath("//ul[@class='operations']//li[.='AC']").click()
-        self.assertTrue(success)
-    
+
+    def add_one_digit(self, wd):
+        wd.find_element_by_xpath("//ul[@class='digits']//li[.='1']").click()
+
+    def load_home_page(self, wd):
+        wd.get("http://qa-test.klika-tech.com/")
+
     def tearDown(self):
         self.wd.quit()
 
